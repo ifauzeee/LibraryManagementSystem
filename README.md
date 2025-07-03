@@ -1,11 +1,9 @@
-Sure! Here’s the updated README with the specified sections aligned to the side instead of below:
-
 # 📚 Library Management System
 
-![Java](https://img.shields.io/badge/Java-JDK%2017-red)  
-![Swing](https://img.shields.io/badge/UI-Swing-blue)  
-![MySQL](https://img.shields.io/badge/Database-MySQL-orange)  
-![FlatLaf](https://img.shields.io/badge/Look%20&%20Feel-FlatLaf-yellowgreen)  
+![Java](https://img.shields.io/badge/Java-JDK%2017-red)
+![Swing](https://img.shields.io/badge/UI-Swing-blue)
+![MySQL](https://img.shields.io/badge/Database-MySQL-orange)
+![FlatLaf](https://img.shields.io/badge/Look%20&%20Feel-FlatLaf-yellowgreen)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 The **Library Management System** is a modern, Java-based desktop application designed to streamline library operations. Built with **Java Swing** and enhanced with the **FlatLaf** theme, it offers an intuitive and visually appealing interface. The system manages books, borrowers, loan transactions, and user authentication, with data securely stored in a **MySQL** database using **jBCrypt** for password hashing.
