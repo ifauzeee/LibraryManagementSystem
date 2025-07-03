@@ -146,7 +146,7 @@ LibraryManagementSystem/
 ├── README.md                    # Documentation
 ├── LICENSE                      # MIT License
 
-
+```
 ⚙️ Setup Guide
 1. Database Setup (MySQL via XAMPP)
 
