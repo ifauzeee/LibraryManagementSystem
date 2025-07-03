@@ -1,7 +1,9 @@
 package com.library.view;
 
+import com.formdev.flatlaf.FlatClientProperties; // BARU
 import com.library.dao.BorrowerDAO;
 import com.library.model.Borrower;
+import com.library.model.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,18 +16,33 @@ public class BorrowerPanel extends JPanel {
     private JTable borrowerTable;
     private DefaultTableModel tableModel;
     private BorrowerDAO borrowerDAO;
+    private String userRole;
 
-    public BorrowerPanel() {
+    public BorrowerPanel(String userRole) {
+        this.userRole = userRole;
+
         borrowerDAO = new BorrowerDAO();
-        setLayout(new BorderLayout(10, 10)); // Border layout dengan gap
-        setBorder(new EmptyBorder(15, 15, 15, 15)); // Padding
+        setLayout(new BorderLayout(15, 15)); // Jarak lebih besar antar komponen utama
+        setBorder(new EmptyBorder(20, 20, 20, 20)); // Padding lebih besar
+        setBackground(UIManager.getColor("Panel.background")); // Gunakan warna global
 
-        // Bagian atas untuk pencarian atau filter jika ada
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        // Anda bisa menambahkan search bar di sini nanti
-        add(topPanel, BorderLayout.NORTH);
+        // Panel atas (untuk tombol refresh)
+        JPanel topControlPanel = new JPanel(new BorderLayout(10, 0));
+        topControlPanel.setOpaque(false);
 
-        // Tabel Peminjam
+        JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        topButtonPanel.setOpaque(false);
+
+        JButton refreshButton = new JButton("Refresh Data");
+        refreshButton.setFont(UIManager.getFont("Button.font"));
+        refreshButton.setPreferredSize(new Dimension(120, 38));
+        refreshButton.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_ROUND_RECT);
+        refreshButton.addActionListener(e -> loadBorrowers());
+        topButtonPanel.add(refreshButton);
+
+        topControlPanel.add(topButtonPanel, BorderLayout.EAST);
+        add(topControlPanel, BorderLayout.NORTH);
+
         String[] columns = {"ID", "Nama", "Email", "Telepon"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -34,51 +51,53 @@ public class BorrowerPanel extends JPanel {
             }
         };
         borrowerTable = new JTable(tableModel);
-        borrowerTable.setFillsViewportHeight(true);
-        borrowerTable.setRowHeight(30);
-        borrowerTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        borrowerTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
-        borrowerTable.getTableHeader().setReorderingAllowed(false);
-        borrowerTable.getTableHeader().setBackground(new Color(220, 220, 220));
-
-        borrowerTable.getColumnModel().getColumn(0).setPreferredWidth(50); // ID
-        borrowerTable.getColumnModel().getColumn(1).setPreferredWidth(200); // Nama
-        borrowerTable.getColumnModel().getColumn(2).setPreferredWidth(250); // Email
-        borrowerTable.getColumnModel().getColumn(3).setPreferredWidth(120); // Telepon
+        // Properti tabel sudah diatur di Main.java
 
         JScrollPane scrollPane = new JScrollPane(borrowerTable);
-        scrollPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        scrollPane.setBorder(BorderFactory.createLineBorder(UIManager.getColor("Table.gridColor"), 1));
         add(scrollPane, BorderLayout.CENTER);
 
-        // Panel Tombol
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+        buttonPanel.setOpaque(false);
 
         JButton addButton = new JButton("Tambah Peminjam");
         JButton updateButton = new JButton("Perbarui Peminjam");
         JButton deleteButton = new JButton("Hapus Peminjam");
 
-        Font buttonFont = new Font("Segoe UI", Font.BOLD, 13);
-        int buttonHeight = 40;
-        int buttonWidth = 160;
-        Dimension buttonSize = new Dimension(buttonWidth, buttonHeight);
+        Dimension buttonSize = new Dimension(160, 45);
 
-        addButton.setFont(buttonFont);
+        addButton.setFont(UIManager.getFont("Button.font"));
         addButton.setPreferredSize(buttonSize);
-        updateButton.setFont(buttonFont);
+        updateButton.setFont(UIManager.getFont("Button.font"));
         updateButton.setPreferredSize(buttonSize);
-        deleteButton.setFont(buttonFont);
+        deleteButton.setFont(UIManager.getFont("Button.font"));
         deleteButton.setPreferredSize(buttonSize);
+
+        // Warna tombol
+        addButton.setBackground(new Color(76, 175, 80)); // Hijau
+        addButton.setForeground(Color.WHITE);
+        updateButton.setBackground(new Color(33, 150, 243)); // Biru
+        updateButton.setForeground(Color.WHITE);
+        deleteButton.setBackground(new Color(244, 67, 54)); // Merah
+        deleteButton.setForeground(Color.WHITE);
 
         buttonPanel.add(addButton);
         buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Muat data
+        if (userRole.equals("USER") || userRole.equals("ADMIN")) {
+            addButton.setVisible(false);
+            updateButton.setVisible(false);
+            deleteButton.setVisible(false);
+        } else { // SUPER_ADMIN
+            addButton.setVisible(true);
+            updateButton.setVisible(true);
+            deleteButton.setVisible(true);
+        }
+
         loadBorrowers();
 
-        // Aksi tombol
         addButton.addActionListener(e -> addBorrower());
         updateButton.addActionListener(e -> updateBorrower());
         deleteButton.addActionListener(e -> deleteBorrower());
@@ -90,7 +109,10 @@ public class BorrowerPanel extends JPanel {
             tableModel.setRowCount(0);
             for (Borrower borrower : borrowers) {
                 tableModel.addRow(new Object[]{
-                        borrower.getId(), borrower.getName(), borrower.getEmail(), borrower.getPhone()
+                        borrower.getId(),
+                        borrower.getName(),
+                        borrower.getEmail(),
+                        borrower.getPhone()
                 });
             }
         } catch (SQLException e) {
@@ -100,17 +122,14 @@ public class BorrowerPanel extends JPanel {
     }
 
     private void addBorrower() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(0, 2, 15, 10)); // Gap lebih besar
         JTextField nameField = new JTextField(20);
         JTextField emailField = new JTextField(20);
         JTextField phoneField = new JTextField(20);
 
-        panel.add(new JLabel("Nama:"));
-        panel.add(nameField);
-        panel.add(new JLabel("Email:"));
-        panel.add(emailField);
-        panel.add(new JLabel("Telepon:"));
-        panel.add(phoneField);
+        panel.add(new JLabel("Nama:")); panel.add(nameField);
+        panel.add(new JLabel("Email:")); panel.add(emailField);
+        panel.add(new JLabel("Telepon:")); panel.add(phoneField);
 
         int option = JOptionPane.showConfirmDialog(this, panel, "Tambah Peminjam Baru", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (option == JOptionPane.OK_OPTION) {
@@ -135,6 +154,7 @@ public class BorrowerPanel extends JPanel {
     }
 
     private void updateBorrower() {
+        JPanel panel = new JPanel(new GridLayout(0, 2, 15, 10)); // Gap lebih besar
         int selectedRow = borrowerTable.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Pilih peminjam dari tabel untuk diperbarui.", "Peringatan", JOptionPane.WARNING_MESSAGE);
@@ -142,17 +162,14 @@ public class BorrowerPanel extends JPanel {
         }
 
         int id = (int) tableModel.getValueAt(selectedRow, 0);
-        JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
+
         JTextField nameField = new JTextField((String) tableModel.getValueAt(selectedRow, 1), 20);
         JTextField emailField = new JTextField((String) tableModel.getValueAt(selectedRow, 2), 20);
         JTextField phoneField = new JTextField((String) tableModel.getValueAt(selectedRow, 3), 20);
 
-        panel.add(new JLabel("Nama:"));
-        panel.add(nameField);
-        panel.add(new JLabel("Email:"));
-        panel.add(emailField);
-        panel.add(new JLabel("Telepon:"));
-        panel.add(phoneField);
+        panel.add(new JLabel("Nama:")); panel.add(nameField);
+        panel.add(new JLabel("Email:")); panel.add(emailField);
+        panel.add(new JLabel("Telepon:")); panel.add(phoneField);
 
         int option = JOptionPane.showConfirmDialog(this, panel, "Perbarui Peminjam", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (option == JOptionPane.OK_OPTION) {

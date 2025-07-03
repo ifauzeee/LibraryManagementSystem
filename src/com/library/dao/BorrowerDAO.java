@@ -55,4 +55,23 @@ public class BorrowerDAO {
         }
         return borrowers;
     }
+
+    public Borrower getBorrowerById(int borrowerId) throws SQLException {
+        String sql = "SELECT * FROM borrowers WHERE borrower_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, borrowerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Borrower borrower = new Borrower();
+                    borrower.setId(rs.getInt("borrower_id"));
+                    borrower.setName(rs.getString("name"));
+                    borrower.setEmail(rs.getString("email"));
+                    borrower.setPhone(rs.getString("phone"));
+                    return borrower;
+                }
+            }
+        }
+        return null;
+    }
 }
