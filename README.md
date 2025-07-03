@@ -29,7 +29,6 @@ Perfect for small to medium-sized libraries aiming to digitize their operations 
 - [🤝 Contributing](#contributing)
 - [📜 License](#license)
 - [📬 Contact](#contact)
-
 ---
 
 ## ✨ Overview
