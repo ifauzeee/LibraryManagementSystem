@@ -1,3 +1,5 @@
+Sure! Here’s the updated README with the specified sections aligned to the side instead of below:
+
 # 📚 Library Management System
 
 ![Java](https://img.shields.io/badge/Java-JDK%2017-red)  
@@ -10,6 +12,7 @@ The **Library Management System** is a modern, Java-based desktop application de
 
 Perfect for small to medium-sized libraries aiming to digitize their operations with simplicity and efficiency! 🚀
 
+---
 
 ## 📋 Table of Contents
 
@@ -29,6 +32,7 @@ Perfect for small to medium-sized libraries aiming to digitize their operations 
 - [📜 License](#license)
 - [📬 Contact](#contact)
 
+---
 
 ## ✨ Overview
 
@@ -41,6 +45,7 @@ The Library Management System simplifies library operations with a sleek, user-f
 
 Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web-inspired look. Data is stored securely in a **MySQL** database, ensuring reliability and performance.
 
+---
 
 ## 🔑 Key Features
 
@@ -74,6 +79,7 @@ Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web
    - "Refresh Data" buttons for manual updates.
    - Role-based tab/button visibility.
 
+---
 
 ## 👥 User Roles
 
@@ -83,6 +89,7 @@ Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web
 | **ADMIN**       | Books, Transactions            | CRUD on Books/Transactions (no borrower deletion); approve/reject loans |
 | **USER**        | Books                          | View books, submit loan requests, return books |
 
+---
 
 ## 🛠️ Technologies
 
@@ -95,6 +102,7 @@ Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web
 - **Connector**: MySQL Connector/J
 - **IDE**: [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended)
 
+---
 
 ## 📦 Requirements
 
@@ -102,6 +110,7 @@ Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web
 - **XAMPP**: MySQL module running
 - **Internet**: For downloading JAR dependencies
 
+---
 
 ## 📁 Project Structure
 
@@ -141,6 +150,7 @@ LibraryManagementSystem/
 ├── LICENSE                      # MIT License
 ```
 
+---
 
 ## ⚙️ Setup Guide
 
@@ -198,6 +208,7 @@ Follow these steps to set up and run the application locally. Ensure all require
 
 The login window will appear upon successful launch.
 
+---
 
 ## 🔐 Default Credentials
 
@@ -209,11 +220,13 @@ After resetting the database, these accounts are auto-created:
 | **ADMIN**       | admin      | adminpass  |
 | **USER**        | user       | userpass   |
 
+---
 
 ## 📸 Screenshots
 
 Upload screenshots to the `images/` folder and update paths below.
 
+---
 
 ## 🤝 Contributing
 
@@ -227,11 +240,13 @@ We welcome contributions! To contribute:
 
 Please follow the Code of Conduct.
 
+---
 
 ## 📜 License
 
 This project is licensed under the MIT License.
 
+---
 
 ## 📬 Contact
 
