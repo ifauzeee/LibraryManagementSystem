@@ -1,4 +1,3 @@
-```markdown
 # Library Management System
 
 ![Java Swing UI](https://img.shields.io/badge/UI-Java%20Swing-blue)
