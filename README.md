@@ -1,6 +1,3 @@
-Berikut adalah README.md yang telah diperbaiki dengan format tautan yang benar dan semua bagian yang diperlukan:
-
-```markdown
 # 📚 Library Management System
 
 ![Java](https://img.shields.io/badge/Java-JDK%2017-red)  
