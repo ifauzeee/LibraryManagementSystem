@@ -3,7 +3,7 @@
 
 # Sistem Manajemen Perpustakaan
 
-\-lightgrey)
+
 
 Sistem Manajemen Perpustakaan adalah aplikasi desktop berbasis Java yang dirancang untuk mengelola koleksi buku, data peminjam, transaksi peminjaman, dan otentikasi pengguna. Aplikasi ini dilengkapi dengan antarmuka pengguna grafis (GUI) yang modern dan intuitif menggunakan Java Swing, dengan tema visual FlatLaf. Data disimpan secara persisten dan aman menggunakan database MySQL.
 
