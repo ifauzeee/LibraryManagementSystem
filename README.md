@@ -105,14 +105,18 @@ Aplikasi ini menerapkan kontrol akses berbasis peran:
 * XAMPP dengan modul MySQL yang sedang berjalan.
 * Koneksi internet (untuk mengunduh dependensi jika diperlukan).
 
----
+
+-----
 
 ## Struktur File Proyek
 
+Struktur proyek ini diatur untuk menjaga kode tetap rapi dan terorganisir.
+
+```
 LibraryManagementSystem/
 ├── .idea/                      # Folder konfigurasi IntelliJ IDEA
 ├── out/                        # Output kompilasi (dibuat otomatis)
-├── lib/                        # <-- DIREKTORI UNTUK FILE JAR EKSTERNAL
+├── lib/                        # <-- Direktori untuk file .jar eksternal
 │   ├── flatlaf-3.4.jar
 │   ├── flatlaf-themes-3.4.jar
 │   ├── jbcrypt-0.4.jar
@@ -126,7 +130,8 @@ LibraryManagementSystem/
 │           ├── dao/
 │           ├── model/
 │           └── view/
-└── README.md
+└── README.md                   # File yang sedang Anda baca
+```
 
 
 ---
