@@ -21,9 +21,9 @@ Perfect for small to medium-sized libraries aiming to digitize their operations 
 - [📦 Requirements](#requirements)
 - [📁 Project Structure](#project-structure)
 - [⚙️ Setup Guide](#setup-guide)
-   - [1. Database Setup (MySQL via XAMPP)](#1-database-setup-mysql-via-xampp)
-   - [2. Java Project Setup (IntelliJ IDEA)](#2-java-project-setup-intellij-idea)
-   - [3. Running the Application](#3-running-the-application)
+   - [1. Set Up MySQL Database with XAMPP](#1-set-up-mysql-database-with-xampp)
+   - [2. Configure Java Project in IntelliJ IDEA](#2-configure-java-project-in-intellij-idea)
+   - [3. Launch the Application](#3-launch-the-application)
 - [🔐 Default Credentials](#default-credentials)
 - [📸 Screenshots](#screenshots)
 - [🤝 Contributing](#contributing)
@@ -50,7 +50,7 @@ Built with **Java Swing** and styled with **FlatLaf**, it delivers a modern, web
 - **🔒 Authentication**:
    - User registration for `USER` and `ADMIN` roles.
    - Secure login with **jBCrypt** password hashing.
-   - Role-based access control for restricted functionality.
+   - Role-based access control (`SUPER_ADMIN`, `ADMIN`, `USER`).
 
 - **📚 Book Management**:
    - CRUD operations (ADMIN/SUPER_ADMIN) for books (title, author, ISBN, copies).
@@ -142,82 +142,38 @@ LibraryManagementSystem/
 │       │   ├── TransactionPanel.java
 │       ├── Main.java         # Application entry point
 ├── images/                      # Screenshots
+├── database_setup.sql           # SQL script for database setup
 ├── .gitignore                   # Git ignore
 ├── README.md                    # Documentation
 ├── LICENSE                      # MIT License
 
-```
+
 ⚙️ Setup Guide
-1. Database Setup (MySQL via XAMPP)
+Follow these steps to set up and run the application locally. Ensure all requirements are met before proceeding.
+1. Set Up MySQL Database with XAMPP
 
-Install XAMPP: Download from apachefriends.org.
+Install XAMPP:
 
-Start MySQL: Open XAMPP Control Panel, click Start for MySQL.
+Download and install from apachefriends.org.
+Launch XAMPP Control Panel and start the MySQL module.
+
 
 Access MySQL:
 
-In XAMPP, click Shell or CMD for MySQL.
-Run: mysql -u root -p (press Enter for no password).
-Create/select database: CREATE DATABASE library_db; then USE library_db;.
+In XAMPP, click Shell or CMD next to MySQL.
+Run: mysql -u root -p (press Enter if no password is set for the root user).
+Create database: CREATE DATABASE library_db; then USE library_db;.
 
 
-Run SQL Script: Paste and execute this script in MySQL Command Line Client:
-SET FOREIGN_KEY_CHECKS = 0;
+Run SQL Script:
 
-TRUNCATE TABLE transactions;
-TRUNCATE TABLE books;
-TRUNCATE TABLE borrowers;
-TRUNCATE TABLE users;
-
-DROP TABLE IF EXISTS transactions;
-DROP TABLE IF EXISTS books;
-DROP TABLE IF EXISTS borrowers;
-DROP TABLE IF EXISTS users;
-
-CREATE TABLE books (
-    book_id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    author VARCHAR(50) NOT NULL,
-    isbn VARCHAR(13) UNIQUE,
-    total_copies INT DEFAULT 1 NOT NULL,
-    available_copies INT DEFAULT 1 NOT NULL
-);
-
-CREATE TABLE borrowers (
-    borrower_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE,
-    phone VARCHAR(15)
-);
-
-CREATE TABLE users (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    role VARCHAR(20) NOT NULL DEFAULT 'USER',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE transactions (
-    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
-    book_id INT,
-    borrower_id INT,
-    borrow_date DATE NOT NULL,
-    return_date DATE,
-    status VARCHAR(20) DEFAULT 'Pending' NOT NULL,
-    quantity INT DEFAULT 1 NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES books(book_id),
-    FOREIGN KEY (borrower_id) REFERENCES borrowers(borrower_id)
-);
-
-SET FOREIGN_KEY_CHECKS = 1;
+Copy the SQL script from database_setup.sql in the project root.
+Paste and execute it in the MySQL Command Line Client to create tables.
+Note: If you encounter errors (e.g., "Access denied"), ensure MySQL is running and no password is set for root. Alternatively, use phpMyAdmin to import the script.
 
 
 
-2. Java Project Setup (IntelliJ IDEA)
+2. Configure Java Project in IntelliJ IDEA
 
 Clone Repository:
 git clone https://github.com/ifauzeee/LibraryManagementSystem.git
@@ -225,16 +181,16 @@ cd LibraryManagementSystem
 
 Replace ifauzeee with your GitHub username if forked.
 
-Open in IntelliJ:
+Open Project:
 
 Launch IntelliJ IDEA.
-Select File > Open... > LibraryManagementSystem folder.
+Select File > Open... and choose the LibraryManagementSystem folder.
 
 
-Add JARs:
+Add External JARs:
 
-Create lib/ folder in project root.
-Download and place these JARs in lib/:
+Create a lib/ folder in the project root if it doesn’t exist.
+Download these JARs and place them in lib/:
 MySQL Connector/J (e.g., mysql-connector-j-8.0.33.jar)
 FlatLaf Core (e.g., flatlaf-3.4.jar)
 FlatLaf Themes (e.g., flatlaf-themes-3.4.jar)
@@ -244,27 +200,24 @@ jBCrypt (e.g., jbcrypt-0.4.jar)
 In IntelliJ: File > Project Structure... > Libraries > + > Java > select all JARs in lib/ > OK.
 
 
-Invalidate Caches:
-
-File > Invalidate Caches / Restart... > Invalidate and Restart.
-
-
 Rebuild Project:
 
-Build > Rebuild Project.
+Go to Build > Rebuild Project.
+If IntelliJ shows errors, select File > Invalidate Caches / Restart... > Invalidate and Restart.
 
 
 
-3. Running the Application
+3. Launch the Application
 
 Ensure MySQL is running in XAMPP.
-In IntelliJ, go to src/com/library/Main.java.
-Right-click > Run 'Main.main()'.
+In IntelliJ, navigate to src/com/library/Main.java.
+Right-click and select Run 'Main.main()'.
+Note: If the application fails to connect to the database, verify MySQL is running and the database library_db exists.
 
-The login window will appear.
+The login window will appear upon successful launch.
 
 🔐 Default Credentials
-After database reset, these accounts are auto-created:
+After resetting the database, these accounts are auto-created:
 
 
 
