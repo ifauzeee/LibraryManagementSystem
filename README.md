@@ -1,3 +1,4 @@
+```markdown
 # Library Management System
 
 ![Java Swing UI](https://img.shields.io/badge/UI-Java%20Swing-blue)
@@ -19,9 +20,9 @@ The **Library Management System** is a Java-based desktop application designed t
 - [System Requirements](#system-requirements)
 - [Project File Structure](#project-file-structure)
 - [Installation and Setup](#installation-and-setup)
-   - [1. Configure the Database (MySQL via XAMPP)](#1-configure-the-database-mysql-via-xampp)
-   - [2. Configure the Java Project (IntelliJ IDEA)](#2-configure-the-java-project-intellij-idea)
-   - [3. Run the Application](#3-run-the-application)
+  - [1. Configure the Database (MySQL via XAMPP)](#1-configure-the-database-mysql-via-xampp)
+  - [2. Configure the Java Project (IntelliJ IDEA)](#2-configure-the-java-project-intellij-idea)
+  - [3. Run the Application](#3-run-the-application)
 - [Default User Credentials](#default-user-credentials)
 - [Contributing](#contributing)
 - [License](#license)
@@ -42,33 +43,33 @@ This project is ideal for small to medium-sized libraries looking to digitize th
 The application offers comprehensive functionality tailored to different user roles:
 
 - **Authentication and Authorization:**
-   - **User Registration:** Allows new users to create accounts with `USER` or `ADMIN` roles.
-   - **Secure Login:** Authenticates users with password hashing using the jBCrypt library for enhanced security.
-   - **Role-Based Access Control:** Restricts features and modules based on user roles (`SUPER_ADMIN`, `ADMIN`, `USER`).
+  - **User Registration:** Allows new users to create accounts with `USER` or `ADMIN` roles.
+  - **Secure Login:** Authenticates users with password hashing using the jBCrypt library for enhanced security.
+  - **Role-Based Access Control:** Restricts features and modules based on user roles (`SUPER_ADMIN`, `ADMIN`, `USER`).
 
 - **Book Management:**
-   - **CRUD Operations (ADMIN/SUPER_ADMIN):** Add, update, or delete books, including details like title, author, ISBN, and total/available copies.
-   - **Dynamic Availability Status:** Displays real-time book availability in the table:
-      - `Full (Ready)`: All copies are available.
-      - `Available (X/Y)`: Shows available copies out of total copies (e.g., `3/5`).
-      - `Out of Stock`: No copies available for borrowing.
-   - **Book Listing:** Viewable by all roles, showing comprehensive book details and stock status.
+  - **CRUD Operations (ADMIN/SUPER_ADMIN):** Add, update, or delete books, including details like title, author, ISBN, and total/available copies.
+  - **Dynamic Availability Status:** Displays real-time book availability in the table:
+    - `Full (Ready)`: All copies are available.
+    - `Available (X/Y)`: Shows available copies out of total copies (e.g., `3/5`).
+    - `Out of Stock`: No copies available for borrowing.
+  - **Book Listing:** Viewable by all roles, showing comprehensive book details and stock status.
 
 - **Borrower Management:**
-   - **CRUD Operations (SUPER_ADMIN only):** Manage borrower data, including name, email, and phone number. Borrower entries are automatically created/updated during user registration or login.
+  - **CRUD Operations (SUPER_ADMIN only):** Manage borrower data, including name, email, and phone number. Borrower entries are automatically created/updated during user registration or login.
 
 - **Loan Transaction Management:**
-   - **Loan Requests (USER):** Users can select books, specify quantities, and submit loan requests with a `Pending` status.
-   - **Loan Approval/Rejection (ADMIN/SUPER_ADMIN):** Admins review and approve or reject pending requests. Approvals automatically reduce available book copies.
-   - **Direct Loan Recording (ADMIN/SUPER_ADMIN):** Admins can record loans directly with immediate approval.
-   - **Book Returns (USER):** Users can mark borrowed books as returned, updating the transaction status to `Returned` and restoring available copies.
-   - **Transaction History (ADMIN/SUPER_ADMIN):** View a complete history of all loan and return transactions.
+  - **Loan Requests (USER):** Users can select books, specify quantities, and submit loan requests with a `Pending` status.
+  - **Loan Approval/Rejection (ADMIN/SUPER_ADMIN):** Admins review and approve or reject pending requests. Approvals automatically reduce available book copies.
+  - **Direct Loan Recording (ADMIN/SUPER_ADMIN):** Admins can record loans directly with immediate approval.
+  - **Book Returns (USER):** Users can mark borrowed books as returned, updating the transaction status to `Returned` and restoring available copies.
+  - **Transaction History (ADMIN/SUPER_ADMIN):** View a complete history of all loan and return transactions.
 
 - **Modern User Interface:**
-   - Clean, flat, and modern design using **FlatLaf**, mimicking web-inspired aesthetics with rounded buttons, subtle shadows, and consistent typography.
-   - Maximized dashboard window for optimal screen usage.
-   - "Refresh Data" buttons on each tab for manual data updates.
-   - Dynamic visibility of tabs and action buttons based on user role.
+  - Clean, flat, and modern design using **FlatLaf**, mimicking web-inspired aesthetics with rounded buttons, subtle shadows, and consistent typography.
+  - Maximized dashboard window for optimal screen usage.
+  - "Refresh Data" buttons on each tab for manual data updates.
+  - Dynamic visibility of tabs and action buttons based on user role.
 
 ---
 
@@ -77,14 +78,14 @@ The application offers comprehensive functionality tailored to different user ro
 The application implements role-based access control to restrict functionality:
 
 - **`SUPER_ADMIN`**:
-   - **Access:** All tabs (Books, Borrowers, Transactions).
-   - **Permissions:** Full CRUD operations on Books, Borrowers, and Transactions; approve/reject loan requests.
+  - **Access:** All tabs (Books, Borrowers, Transactions).
+  - **Permissions:** Full CRUD operations on Books, Borrowers, and Transactions; approve/reject loan requests.
 - **`ADMIN`**:
-   - **Access:** Books and Transactions tabs.
-   - **Permissions:** Full CRUD operations on Books and Transactions (except borrower deletion); approve/reject loan requests.
+  - **Access:** Books and Transactions tabs.
+  - **Permissions:** Full CRUD operations on Books and Transactions (except borrower deletion); approve/reject loan requests.
 - **`USER`**:
-   - **Access:** Books tab only.
-   - **Permissions:** View book list, submit loan requests, and return borrowed books.
+  - **Access:** Books tab only.
+  - **Permissions:** View book list, submit loan requests, and return borrowed books.
 
 ---
 
