@@ -1,3 +1,5 @@
+Below is a revised `README.md` for your Library Management System project, formatted correctly and comprehensively according to Markdown best practices. It refines your original content, ensuring a professional, clear, and complete structure while maintaining a formal tone as per your preferences. The content is organized logically, includes all essential details, and addresses potential user needs (e.g., setup, usage, troubleshooting).
+
 ```markdown
 # Library Management System
 
@@ -16,9 +18,9 @@ This project is hosted on GitHub: [ifauzeee/LibraryManagementSystem](https://git
 - [Technologies Used](#technologies-used)
 - [System Requirements](#system-requirements)
 - [Installation and Setup](#installation-and-setup)
-  - [1. Database Configuration (MySQL via XAMPP)](#1-database-configuration-mysql-via-xampp)
-  - [2. Java Project Setup (IntelliJ IDEA)](#2-java-project-setup-intellij-idea)
-  - [3. Running the Application](#3-running-the-application)
+   - [1. Database Configuration (MySQL via XAMPP)](#1-database-configuration-mysql-via-xampp)
+   - [2. Java Project Setup (IntelliJ IDEA)](#2-java-project-setup-intellij-idea)
+   - [3. Running the Application](#3-running-the-application)
 - [Default Credentials](#default-credentials)
 - [Usage](#usage)
 - [Troubleshooting](#troubleshooting)
@@ -31,34 +33,34 @@ This project is hosted on GitHub: [ifauzeee/LibraryManagementSystem](https://git
 The application provides robust functionality tailored to different user roles:
 
 - **Authentication and Authorization:**
-  - **User Registration:** Create accounts with `USER` or `ADMIN` roles.
-  - **Secure Login:** Passwords are hashed using jBCrypt for enhanced security.
-  - **Role-Based Access:**
-    - `SUPER_ADMIN`: Full access, including user management.
-    - `ADMIN
+   - **User Registration:** Create accounts with `USER` or `ADMIN` roles.
+   - **Secure Login:** Passwords are hashed using jBCrypt for enhanced security.
+   - **Role-Based Access:**
+      - `SUPER_ADMIN`: Full access, including user management.
+      - `ADMIN
 
 `: Manage books (create, read, update, delete), borrowers (CRUD), and loan transactions (approve, reject, record).
     - `USER`: View book catalog, request loans, and return borrowed books.
 
 - **Book Management:**
-  - **CRUD Operations:** Admins can add, update, or delete books and manage copy inventory.
-  - **Book Listing:** Displays books with dynamic availability status (e.g., "Full (Ready)", "Available (X/Y)", "Out of Stock").
-  
+   - **CRUD Operations:** Admins can add, update, or delete books and manage copy inventory.
+   - **Book Listing:** Displays books with dynamic availability status (e.g., "Full (Ready)", "Available (X/Y)", "Out of Stock").
+
 - **Borrower Management:**
-  - **CRUD Operations:** Exclusive to `SUPER_ADMIN` for managing borrower data.
+   - **CRUD Operations:** Exclusive to `SUPER_ADMIN` for managing borrower data.
 
 - **Loan Transaction Management:**
-  - **Loan Requests:** Users can submit loan requests, pending admin approval.
-  - **Approval/Rejection:** Admins can approve or reject requests, automatically updating book inventory.
-  - **Direct Loan Recording:** Admins can record approved loans directly.
-  - **Book Returns:** Users can return books, updating inventory and transaction status.
-  - **Transaction History:** Admins can view a complete transaction log.
+   - **Loan Requests:** Users can submit loan requests, pending admin approval.
+   - **Approval/Rejection:** Admins can approve or reject requests, automatically updating book inventory.
+   - **Direct Loan Recording:** Admins can record approved loans directly.
+   - **Book Returns:** Users can return books, updating inventory and transaction status.
+   - **Transaction History:** Admins can view a complete transaction log.
 
 - **User Interface:**
-  - Modern, flat design using **FlatLaf** (Light Mac Theme).
-  - Maximized dashboard window on startup.
-  - Role-based visibility for tabs and buttons.
-  - "Refresh Data" button on each tab to update displayed data.
+   - Modern, flat design using **FlatLaf** (Light Mac Theme).
+   - Maximized dashboard window on startup.
+   - Role-based visibility for tabs and buttons.
+   - "Refresh Data" button on each tab to update displayed data.
 
 ## Technologies Used
 
@@ -177,10 +179,10 @@ Follow these steps to set up and run the application locally.
 3. **Add External JARs:**
    - Create a `lib/` folder in the project root (`LibraryManagementSystem/lib/`).
    - Download the following JAR files and place them in `lib/`:
-     - `mysql-connector-j-<version>.jar` (e.g., `mysql-connector-j-8.0.33.jar`)
-     - `flatlaf-<version>.jar` (e.g., `flatlaf-3.4.jar`)
-     - `flatlaf-themes-<version>.jar` (e.g., `flatlaf-themes-3.4.jar`)
-     - `jbcrypt-<version>.jar` (e.g., `jbcrypt-0.4.jar`)
+      - `mysql-connector-j-<version>.jar` (e.g., `mysql-connector-j-8.0.33.jar`)
+      - `flatlaf-<version>.jar` (e.g., `flatlaf-3.4.jar`)
+      - `flatlaf-themes-<version>.jar` (e.g., `flatlaf-themes-3.4.jar`)
+      - `jbcrypt-<version>.jar` (e.g., `jbcrypt-0.4.jar`)
    - In IntelliJ, go to `File` > `Project Structure` (`Ctrl+Alt+Shift+S`).
    - Under `Project Settings` > `Libraries`, click `+` > `Java`.
    - Navigate to `lib/`, select all JAR files, click `OK`, and apply changes.
@@ -202,48 +204,48 @@ The application will launch, displaying the login window.
 After resetting the database, the following default accounts are created automatically:
 
 - **SUPER_ADMIN:**
-  - Username: `superadmin`
-  - Password: `superpass`
+   - Username: `superadmin`
+   - Password: `superpass`
 - **ADMIN:**
-  - Username: `admin`
-  - Password: `adminpass`
+   - Username: `admin`
+   - Password: `adminpass`
 - **USER:**
-  - Username: `user`
-  - Password: `userpass`
+   - Username: `user`
+   - Password: `userpass`
 
 ## Usage
 
 - **Login Screen:**
-  - Log in using default credentials or register a new account.
+   - Log in using default credentials or register a new account.
 - **Dashboard:**
-  - **Header:** Displays the logged-in user’s name, role, and a Logout button.
-  - **Books Tab:**
-    - `USER`: View book catalog, check availability, request loans, or return borrowed books.
-    - `ADMIN`/`SUPER_ADMIN`: Add, update, or delete books and manage inventory.
-  - **Borrowers Tab:**
-    - Visible only to `SUPER_ADMIN` for managing borrower records (CRUD).
-  - **Transactions Tab:**
-    - Visible to `ADMIN`/`SUPER_ADMIN` for reviewing, approving, rejecting, or recording loans.
-  - **Refresh Data:** Each tab includes a button to refresh displayed data.
+   - **Header:** Displays the logged-in user’s name, role, and a Logout button.
+   - **Books Tab:**
+      - `USER`: View book catalog, check availability, request loans, or return borrowed books.
+      - `ADMIN`/`SUPER_ADMIN`: Add, update, or delete books and manage inventory.
+   - **Borrowers Tab:**
+      - Visible only to `SUPER_ADMIN` for managing borrower records (CRUD).
+   - **Transactions Tab:**
+      - Visible to `ADMIN`/`SUPER_ADMIN` for reviewing, approving, rejecting, or recording loans.
+   - **Refresh Data:** Each tab includes a button to refresh displayed data.
 
 ## Troubleshooting
 
 - **MySQL Connection Issues:**
-  - Ensure the MySQL module is running in XAMPP.
-  - Verify the database `library_db` exists and the SQL schema is applied correctly.
-  - Check MySQL credentials (default: `root`, no password).
+   - Ensure the MySQL module is running in XAMPP.
+   - Verify the database `library_db` exists and the SQL schema is applied correctly.
+   - Check MySQL credentials (default: `root`, no password).
 
 - **JAR Dependency Errors:**
-  - Confirm all required JARs are added to the `lib/` folder and included in IntelliJ’s project structure.
-  - Rebuild the project or invalidate caches if errors persist.
+   - Confirm all required JARs are added to the `lib/` folder and included in IntelliJ’s project structure.
+   - Rebuild the project or invalidate caches if errors persist.
 
 - **Application Fails to Start:**
-  - Ensure JDK 17 is installed and configured in IntelliJ (`File` > `Project Structure` > `SDK`).
-  - Check the console for error messages and verify database connectivity.
+   - Ensure JDK 17 is installed and configured in IntelliJ (`File` > `Project Structure` > `SDK`).
+   - Check the console for error messages and verify database connectivity.
 
 - **UI Issues:**
-  - Ensure FlatLaf and its theme JARs are correctly included.
-  - Verify the project is built with JDK 17 for compatibility.
+   - Ensure FlatLaf and its theme JARs are correctly included.
+   - Verify the project is built with JDK 17 for compatibility.
 
 For further assistance, check the [GitHub Issues](https://github.com/ifauzeee/LibraryManagementSystem/issues) page or contact the maintainer.
 
