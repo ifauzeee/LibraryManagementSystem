@@ -1,270 +1,315 @@
-# Sistem Manajemen Perpustakaan
+
+```markdown
+# Library Management System
 
 ![Java Swing UI](https://img.shields.io/badge/UI-Java%20Swing-blue)
 ![Database](https://img.shields.io/badge/Database-MySQL-orange)
 ![Development](https://img.shields.io/badge/Development-Java%20JDK%2017-red)
-![Build System](https://img.shields.io/badge/Build-Non--Maven%20(Manual%20JARs))-lightgrey)
+![Build System](https://img.shields.io/badge/Build-Non--Maven%20(Manual%20JARs)-lightgrey)
 ![Look and Feel](https://img.shields.io/badge/L&F-FlatLaf-yellowgreen)
 
-Sistem Manajemen Perpustakaan adalah aplikasi desktop berbasis Java yang dirancang untuk mengelola koleksi buku, data peminjam, transaksi peminjaman, dan otentikasi pengguna. Aplikasi ini dilengkapi dengan antarmuka pengguna grafis (GUI) yang modern dan intuitif menggunakan Java Swing, dengan tema visual FlatLaf. Data disimpan secara persisten dan aman menggunakan database MySQL.
+The **Library Management System** is a Java-based desktop application designed to streamline the management of library operations, including book collections, borrower data, loan transactions, and user authentication. It features a modern and intuitive graphical user interface (GUI) built with Java Swing and enhanced with the FlatLaf theme for a web-inspired aesthetic. Data is securely stored and managed in a MySQL database.
 
 ---
 
-## Daftar Isi
+## Table of Contents
 
-* [Deskripsi Proyek](#deskripsi-proyek)
-* [Fitur Utama](#fitur-utama)
-* [Peran Pengguna & Akses](#peran-pengguna--akses)
-* [Teknologi yang Digunakan](#teknologi-yang-digunakan)
-* [Persyaratan Sistem](#persyaratan-sistem)
-* [Struktur File Proyek](#struktur-file-proyek)
-* [Panduan Instalasi & Penggunaan](#panduan-instalasi--penggunaan)
-   * [1. Konfigurasi Database](#1-konfigurasi-database-mysql-via-xampp)
-   * [2. Konfigurasi Proyek Java](#2-konfigurasi-proyek-java-intellij-idea)
-   * [3. Jalankan Aplikasi](#3-jalankan-aplikasi)
-* [Kredensial Pengguna Default](#kredensial-pengguna-default)
-* [Kontribusi](#kontribusi)
-* [Lisensi](#lisensi)
-
----
-
-## Deskripsi Proyek
-
-Sistem Manajemen Perpustakaan ini menyediakan solusi komprehensif untuk mengelola operasional dasar perpustakaan. Aplikasi desktop ini dibangun menggunakan Java Swing, menawarkan pengalaman pengguna yang mulus melalui desain antarmuka modern yang terinspirasi oleh FlatLaf. Semua data dikelola dan disimpan dengan aman di database MySQL. Aplikasi ini mendukung alur kerja peminjaman buku yang melibatkan pengajuan oleh pengguna, persetujuan oleh admin, hingga pengembalian buku dengan pembaruan stok otomatis dan manajemen stok berbasis kuantitas.
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [User Roles and Permissions](#user-roles-and-permissions)
+- [Technologies Used](#technologies-used)
+- [System Requirements](#system-requirements)
+- [Project File Structure](#project-file-structure)
+- [Installation and Setup](#installation-and-setup)
+  - [1. Configure the Database (MySQL via XAMPP)](#1-configure-the-database-mysql-via-xampp)
+  - [2. Configure the Java Project (IntelliJ IDEA)](#2-configure-the-java-project-intellij-idea)
+  - [3. Run the Application](#3-run-the-application)
+- [Default User Credentials](#default-user-credentials)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ---
 
-## Fitur Utama
+## Project Overview
 
-Aplikasi ini menyediakan fungsionalitas komprehensif yang disesuaikan untuk berbagai peran pengguna:
+The Library Management System provides a robust solution for managing core library operations. Built with Java Swing, it offers a user-friendly interface with a modern, flat design powered by FlatLaf. The application supports a complete workflow for borrowing books, including user-initiated loan requests, admin approvals, and automated stock updates. All data is securely stored in a MySQL database, with password hashing for enhanced security.
 
-* **Sistem Otentikasi dan Otorisasi (Login & Registrasi):**
-   * **Registrasi Akun Baru:** Memungkinkan pengguna untuk mendaftar akun baru dengan peran `USER` atau `ADMIN`.
-   * **Login Aman:** Otentikasi pengguna dengan *hashing* password menggunakan library jBCrypt untuk keamanan data yang sensitif.
-   * **Manajemen Peran (Role-Based Access Control):** Mengontrol fitur dan modul yang dapat diakses berdasarkan peran pengguna yang login (`SUPER_ADMIN`, `ADMIN`, `USER`).
-
-* **Manajemen Buku:**
-   * **Tambah/Perbarui/Hapus Buku:** (Hanya untuk `ADMIN`/`SUPER_ADMIN`) Mengelola detail buku seperti judul, penulis, ISBN, dan mengatur jumlah total salinan yang dimiliki.
-   * **Manajemen Stok Kuantitas:** Melacak `total_copies` dan `available_copies` untuk setiap judul buku.
-   * **Status Ketersediaan Dinamis:** Menampilkan status ketersediaan buku secara real-time di tabel (`Full (Ready)`, `Tersedia (X/Y)`, `Habis`) berdasarkan jumlah salinan yang tersedia.
-   * **Lihat Daftar Buku:** (Semua peran) Menampilkan daftar buku lengkap beserta informasi stoknya.
-
-* **Manajemen Peminjam:**
-   * **Tambah/Perbarui/Hapus Peminjam:** (Hanya untuk `SUPER_ADMIN`) Mengelola data anggota perpustakaan, termasuk nama, email, dan nomor telepon. Entri peminjam otomatis dibuat atau diperbarui saat pengguna mendaftar atau login.
-
-* **Manajemen Transaksi Peminjaman:**
-   * **Pengajuan Peminjaman:** (`USER`) Pengguna dapat memilih buku dan menentukan jumlah salinan yang ingin dipinjam, kemudian mengajukan permintaan yang berstatus `Pending`.
-   * **Persetujuan/Penolakan Peminjaman:** (`ADMIN`/`SUPER_ADMIN`) Meninjau dan menyetujui atau menolak permintaan peminjaman yang `Pending`. Persetujuan otomatis mengurangi jumlah `available_copies` buku.
-   * **Pencatatan Peminjaman Langsung:** (`ADMIN`/`SUPER_ADMIN`) Mencatat peminjaman buku yang langsung disetujui (untuk alur admin yang mencatat peminjaman secara instan).
-   * **Pengembalian Buku:** (`USER`) Pengguna dapat menandai buku yang telah mereka pinjam sebagai dikembalikan melalui dashboard mereka. Proses ini secara otomatis memperbarui status transaksi menjadi `Returned` dan menambah jumlah `available_copies` buku.
-   * **Lihat Riwayat Transaksi:** (`ADMIN`/`SUPER_ADMIN`) Menampilkan riwayat lengkap semua transaksi peminjaman dan pengembalian.
-
-* **Antarmuka Pengguna (GUI) Modern:**
-   * Desain yang bersih, datar, dan modern menggunakan **FlatLaf** untuk pengalaman pengguna yang menyenangkan.
-   * Jendela utama (dashboard) otomatis dimaksimalkan saat aplikasi dibuka untuk memanfaatkan ruang layar penuh.
-   * Tombol "Refresh Data" di setiap tab untuk memperbarui tampilan data terkini secara manual.
-   * Visibilitas tab dan tombol aksi disesuaikan secara dinamis berdasarkan peran pengguna yang login.
+This project is ideal for small to medium-sized libraries looking to digitize their operations while maintaining simplicity and efficiency.
 
 ---
 
-## Peran Pengguna & Akses
+## Key Features
 
-Aplikasi ini menerapkan kontrol akses berbasis peran (Role-Based Access Control) untuk membatasi fungsionalitas berdasarkan jenis pengguna:
+The application offers comprehensive functionality tailored to different user roles:
 
-* **`SUPER_ADMIN`**:
-   * **Tab Akses:** Buku, Peminjam, Transaksi.
-   * **Aksi:** Akses penuh ke semua operasi CRUD (Tambah, Perbarui, Hapus) pada Buku, Peminjam, dan Transaksi. Dapat menyetujui/menolak permintaan peminjaman.
-* **`ADMIN`**:
-   * **Tab Akses:** Buku, Transaksi.
-   * **Aksi:** Dapat melakukan semua operasi CRUD pada Buku dan Transaksi (kecuali penghapusan peminjam). Dapat menyetujui/menolak permintaan peminjaman.
-* **`USER`**:
-   * **Tab Akses:** Buku.
-   * **Aksi:** Hanya dapat melihat daftar buku, mengajukan peminjaman buku, dan mengembalikan buku yang dipinjam. Tidak dapat melakukan operasi CRUD pada entitas lain.
+- **Authentication and Authorization:**
+  - **User Registration:** Allows new users to create accounts with `USER` or `ADMIN` roles.
+  - **Secure Login:** Authenticates users with password hashing using the jBCrypt library for enhanced security.
+  - **Role-Based Access Control:** Restricts features and modules based on user roles (`SUPER_ADMIN`, `ADMIN`, `USER`).
 
----
+- **Book Management:**
+  - **CRUD Operations (ADMIN/SUPER_ADMIN):** Add, update, or delete books, including details like title, author, ISBN, and total/available copies.
+  - **Dynamic Availability Status:** Displays real-time book availability in the table:
+    - `Full (Ready)`: All copies are available.
+    - `Available (X/Y)`: Shows available copies out of total copies (e.g., `3/5`).
+    - `Out of Stock`: No copies available for borrowing.
+  - **Book Listing:** Viewable by all roles, showing comprehensive book details and stock status.
 
-## Teknologi yang Digunakan
+- **Borrower Management:**
+  - **CRUD Operations (SUPER_ADMIN only):** Manage borrower data, including name, email, and phone number. Borrower entries are automatically created/updated during user registration or login.
 
-* **Bahasa Pemrograman:** Java (JDK 17)
-* **Antarmuka Pengguna (GUI):** Java Swing
-* **Look and Feel:** [FlatLaf](https://www.formdev.com/flatlaf/) (FlatLaf Light Mac Theme untuk tampilan modern)
-* **Database:** [MySQL](https://www.mysql.com/)
-* **Server Database Lokal:** [XAMPP](https://www.apachefriends.org/index.html) (untuk menjalankan server MySQL)
-* **Hashing Password:** [jBCrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt) (digunakan untuk menyimpan password dengan aman)
-* **Konektor Database:** MySQL Connector/J (Driver JDBC untuk koneksi Java-MySQL)
-* **Integrated Development Environment (IDE):** [IntelliJ IDEA](https://www.jetbrains.com/idea/) (direkomendasikan untuk pengembangan)
+- **Loan Transaction Management:**
+  - **Loan Requests (USER):** Users can select books, specify quantities, and submit loan requests with a `Pending` status.
+  - **Loan Approval/Rejection (ADMIN/SUPER_ADMIN):** Admins review and approve or reject pending requests. Approvals automatically reduce available book copies.
+  - **Direct Loan Recording (ADMIN/SUPER_ADMIN):** Admins can record loans directly with immediate approval.
+  - **Book Returns (USER):** Users can mark borrowed books as returned, updating the transaction status to `Returned` and restoring available copies.
+  - **Transaction History (ADMIN/SUPER_ADMIN):** View a complete history of all loan and return transactions.
 
----
-
-## Persyaratan Sistem
-
-Untuk mengkompilasi dan menjalankan aplikasi ini, pastikan sistem Anda memenuhi persyaratan berikut:
-
-* **Java Development Kit (JDK) 17** atau versi yang lebih baru terinstal.
-* **XAMPP** terinstal dan **modul MySQL** harus dalam keadaan berjalan.
-* Koneksi internet aktif (diperlukan saat pertama kali mengunduh file JAR eksternal).
+- **Modern User Interface:**
+  - Clean, flat, and modern design using **FlatLaf**, mimicking web-inspired aesthetics with rounded buttons, subtle shadows, and consistent typography.
+  - Maximized dashboard window for optimal screen usage.
+  - "Refresh Data" buttons on each tab for manual data updates.
+  - Dynamic visibility of tabs and action buttons based on user role.
 
 ---
 
-## Struktur File Proyek
+## User Roles and Permissions
 
-Struktur proyek mengikuti konvensi standar proyek Java untuk organisasi kode yang rapi:
+The application implements role-based access control to restrict functionality:
 
+- **`SUPER_ADMIN`**:
+  - **Access:** All tabs (Books, Borrowers, Transactions).
+  - **Permissions:** Full CRUD operations on Books, Borrowers, and Transactions; approve/reject loan requests.
+- **`ADMIN`**:
+  - **Access:** Books and Transactions tabs.
+  - **Permissions:** Full CRUD operations on Books and Transactions (except borrower deletion); approve/reject loan requests.
+- **`USER`**:
+  - **Access:** Books tab only.
+  - **Permissions:** View book list, submit loan requests, and return borrowed books.
+
+---
+
+## Technologies Used
+
+- **Programming Language:** Java (JDK 17)
+- **GUI Framework:** Java Swing
+- **Look and Feel:** [FlatLaf](https://www.formdev.com/flatlaf/) (FlatMacLightLaf theme for modern visuals)
+- **Database:** [MySQL](https://www.mysql.com/)
+- **Local Database Server:** [XAMPP](https://www.apachefriends.org/) (for running MySQL)
+- **Password Hashing:** [jBCrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt) (for secure password storage)
+- **Database Connector:** MySQL Connector/J (JDBC driver for Java-MySQL connectivity)
+- **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended for development)
+
+---
+
+## System Requirements
+
+To compile and run the application, ensure your system meets the following requirements:
+
+- **Java Development Kit (JDK):** Version 17 or higher.
+- **XAMPP:** Installed with the MySQL module running.
+- **Internet Connection:** Required for downloading external JAR files during initial setup.
+
+---
+
+## Project File Structure
+
+The project follows a standard Java project structure for organized code:
+
+```
 LibraryManagementSystem/
-├── .idea/                       # Folder konfigurasi IntelliJ IDEA (dibuat otomatis)
-├── out/                         # Output kompilasi (dibuat otomatis saat build)
-├── lib/                         # Direktori untuk file JAR eksternal yang diunduh manual
-│   ├── mysql-connector-j-
-
-
----
-
-## Panduan Instalasi & Penggunaan
-
-Ikuti langkah-langkah di bawah ini untuk menyiapkan dan menjalankan aplikasi di lingkungan lokal Anda.
-
-### 1. Konfigurasi Database (MySQL via XAMPP)
-
-1.  **Unduh & Instal XAMPP:** Jika belum, unduh dan instal XAMPP dari [https://www.apachefriends.org/](https://www.apachefriends.org/).
-2.  **Jalankan MySQL:** Buka **XAMPP Control Panel** dan klik tombol **Start** pada modul **MySQL**. Pastikan statusnya berubah menjadi "Running".
-3.  **Akses MySQL Command Line Client:**
-   * Di **XAMPP Control Panel**, pada baris **MySQL**, klik tombol **`Shell`** atau **`CMD`** (untuk membuka Command Prompt/Terminal MySQL).
-   * Login ke MySQL: Ketik `mysql -u root -p` lalu tekan `Enter`. Jika Anda tidak memiliki password untuk user `root`, cukup tekan `Enter` saat diminta password.
-   * Pilih database `library_db`: Ketik `USE library_db;` (jika database belum ada, Anda bisa membuatnya terlebih dahulu di phpMyAdmin atau dengan perintah `CREATE DATABASE library_db;` lalu `USE library_db;`).
-4.  **Reset dan Buat Skema Tabel:** Tempelkan dan jalankan perintah SQL berikut **secara keseluruhan** dalam satu blok di MySQL Command Line Client. Ini akan menghapus data dan tabel lama, lalu membuat ulang dengan skema terbaru, memastikan `AUTO_INCREMENT` dimulai dari 1.
-
-    ```sql
-    SET FOREIGN_KEY_CHECKS = 0; -- Nonaktifkan pemeriksaan foreign key sementara
-
-    TRUNCATE TABLE transactions;
-    TRUNCATE TABLE books;
-    TRUNCATE TABLE borrowers;
-    TRUNCATE TABLE users;
-
-    -- Drop tabel lama jika ada, untuk memastikan skema terbaru yang digunakan
-    DROP TABLE IF EXISTS transactions;
-    DROP TABLE IF EXISTS books;
-    DROP TABLE IF EXISTS borrowers;
-    DROP TABLE IF EXISTS users;
-
-    -- Tabel Books
-    CREATE TABLE books (
-        book_id INT PRIMARY KEY AUTO_INCREMENT,
-        title VARCHAR(100) NOT NULL,
-        author VARCHAR(50) NOT NULL,
-        isbn VARCHAR(13) UNIQUE,
-        total_copies INT DEFAULT 1 NOT NULL,
-        available_copies INT DEFAULT 1 NOT NULL
-    );
-
-    -- Tabel Borrowers
-    CREATE TABLE borrowers (
-        borrower_id INT PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(50) NOT NULL,
-        email VARCHAR(100) UNIQUE,
-        phone VARCHAR(15)
-    );
-
-    -- Tabel Users
-    CREATE TABLE users (
-        user_id INT PRIMARY KEY AUTO_INCREMENT,
-        username VARCHAR(50) NOT NULL UNIQUE,
-        password_hash VARCHAR(255) NOT NULL,
-        full_name VARCHAR(100),
-        email VARCHAR(100) UNIQUE,
-        role VARCHAR(20) NOT NULL DEFAULT 'USER', -- SUPER_ADMIN, ADMIN, USER
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
-
-    -- Tabel Transactions
-    CREATE TABLE transactions (
-        transaction_id INT PRIMARY KEY AUTO_INCREMENT,
-        book_id INT,
-        borrower_id INT,
-        borrow_date DATE NOT NULL,
-        return_date DATE,
-        status VARCHAR(20) DEFAULT 'Pending' NOT NULL, -- Pending, Approved, Rejected, Returned
-        quantity INT DEFAULT 1 NOT NULL, -- Jumlah salinan yang dipinjam
-        FOREIGN KEY (book_id) REFERENCES books(book_id),
-        FOREIGN KEY (borrower_id) REFERENCES borrowers(borrower_id)
-    );
-
-    SET FOREIGN_KEY_CHECKS = 1; -- Aktifkan kembali pemeriksaan foreign key
-    ```
-
-### 2. Konfigurasi Proyek Java (IntelliJ IDEA)
-
-1.  **Clone Repositori:**
-    Buka terminal atau Git Bash dan *clone* repositori ini ke komputer Anda:
-    ```bash
-    git clone [https://github.com/ifauzeee/LibraryManagementSystem.git](https://github.com/ifauzeee/LibraryManagementSystem.git)
-    cd LibraryManagementSystem
-    ```
-2.  **Buka Proyek di IntelliJ IDEA:**
-   * Buka IntelliJ IDEA.
-   * Pilih `File` > `Open...` dan navigasikan ke folder `LibraryManagementSystem` yang baru Anda *clone*.
-3.  **Unduh dan Tambahkan File JAR Secara Manual:**
-   * Buat folder bernama `lib/` di *root* proyek Anda jika belum ada (`LibraryManagementSystem/lib/`).
-   * Unduh semua file `.jar` berikut dan masukkan ke dalam folder `lib/`:
-      * **MySQL Connector/J:** Kunjungi [dev.mysql.com/downloads/connector/j/](https://dev.mysql.com/downloads/connector/j/) dan unduh `mysql-connector-j-<version>.jar` (gunakan versi terbaru yang kompatibel dengan JDK Anda, misalnya `mysql-connector-j-8.0.33.jar`).
-      * **FlatLaf Core:** Kunjungi [mvnrepository.com/artifact/com.formdev/flatlaf](https://mvnrepository.com/artifact/com.formdev/flatlaf) dan unduh `flatlaf-<version>.jar` (gunakan versi `3.4` atau terbaru).
-      * **FlatLaf Themes:** Kunjungi [mvnrepository.com/artifact/com.formdev/flatlaf-themes](https://mvnrepository.com/artifact/com.formdev/flatlaf-themes) dan unduh `flatlaf-themes-<version>.jar` (gunakan versi `3.4` atau terbaru, harus cocok dengan versi FlatLaf Core).
-      * **jBCrypt:** Kunjungi [mvnrepository.com/artifact/org.mindrot/jbcrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt) dan unduh `jbcrypt-<version>.jar` (gunakan versi `0.4` atau terbaru).
-   * Di IntelliJ IDEA, pergi ke `File` > `Project Structure...` (`Ctrl+Alt+Shift+S`).
-   * Di jendela `Project Structure`, di panel kiri, pilih **`Libraries`** di bawah `Project Settings`.
-   * Klik tombol **`+`** (tambah) di bagian atas panel tengah, lalu pilih **`Java`**.
-   * Navigasikan ke folder `lib/` proyek Anda, pilih **semua file `.jar`** yang baru saja Anda unduh, dan klik `OK`.
-   * Pilih modul proyek Anda (`LibraryManagementSystem`) jika diminta, lalu klik `OK`.
-4.  **Invalidate Caches dan Restart IDE:**
-   * Di IntelliJ IDEA, pergi ke `File` > `Invalidate Caches / Restart...` dari menu atas.
-   * Klik **`Invalidate and Restart`**. Ini akan membersihkan *cache* internal IDE dan me-restart IntelliJ.
-5.  **Rebuild Proyek:**
-   * Setelah IntelliJ IDEA restart dan proyek terbuka sepenuhnya, pergi ke `Build` > **`Rebuild Project`** dari menu atas. Ini akan mengkompilasi ulang seluruh proyek Anda dari awal.
-
-### 3. Jalankan Aplikasi
-
-1.  Pastikan modul **MySQL** di **XAMPP Control Panel** masih dalam keadaan "Running".
-2.  Di IntelliJ IDEA, navigasikan ke file `src/com/library/Main.java` di Project Explorer.
-3.  Klik kanan pada file `Main.java` tersebut, lalu pilih **`Run 'Main.main()'`**.
-
-Aplikasi Sistem Manajemen Perpustakaan akan terbuka dengan jendela login.
+├── .idea/                       # IntelliJ IDEA configuration files (auto-generated)
+├── out/                         # Compiled output (auto-generated during build)
+├── lib/                         # Directory for manually downloaded JAR files
+│   ├── mysql-connector-j-<version>.jar
+│   ├── flatlaf-<version>.jar
+│   ├── flatlaf-themes-<version>.jar
+│   ├── jbcrypt-<version>.jar
+├── src/                         # Source code
+│   └── com/library/
+│       ├── dao/             # Data Access Objects (database interactions)
+│       │   ├── BookDAO.java
+│       │   ├── BorrowerDAO.java
+│       │   ├── TransactionDAO.java
+│       │   ├── UserDAO.java
+│       ├── model/           # Data models
+│       │   ├── Book.java
+│       │   ├── Borrower.java
+│       │   ├── Transaction.java
+│       │   ├── User.java
+│       ├── view/            # GUI components
+│       │   ├── BookPanel.java
+│       │   ├── BorrowerPanel.java
+│       │   ├── LoginFrame.java
+│       │   ├── MainFrame.java
+│       │   ├── RegisterFrame.java
+│       │   ├── TransactionPanel.java
+│       ├── Main.java         # Application entry point
+├── README.md                    # Project documentation
+├── LICENSE                      # License file (e.g., MIT License)
+```
 
 ---
 
-## Kredensial Pengguna Default
+## Installation and Setup
 
-Saat pertama kali Anda menjalankan aplikasi setelah mereset database, akun-akun berikut akan dibuat secara otomatis untuk memudahkan pengujian:
+Follow these steps to set up and run the application locally.
 
-* **SUPER_ADMIN:**
-   * Username: `superadmin`
-   * Password: `superpass`
-* **ADMIN:**
-   * Username: `admin`
-   * Password: `adminpass`
-* **USER:**
-   * Username: `user`
-   * Password: `userpass`
+### 1. Configure the Database (MySQL via XAMPP)
+
+1. **Download and Install XAMPP:** If not already installed, download and install XAMPP from [https://www.apachefriends.org/](https://www.apachefriends.org/).
+2. **Start MySQL:** Open the **XAMPP Control Panel** and click **Start** on the **MySQL** module. Ensure the status changes to "Running".
+3. **Access MySQL Command Line:**
+   - In the XAMPP Control Panel, click **Shell** or **CMD** next to the MySQL module to open a terminal.
+   - Log in to MySQL: Run `mysql -u root -p` and press `Enter`. If no password is set for the `root` user, press `Enter` again.
+   - Select or create the database: Run `USE library_db;` to select the database. If it doesn’t exist, create it with `CREATE DATABASE library_db;` followed by `USE library_db;`.
+4. **Reset and Create Table Schema:** Copy and paste the following SQL script into the MySQL Command Line Client and execute it as a single block. This script clears existing data, drops old tables, and creates a fresh schema with `AUTO_INCREMENT` starting from 1.
+
+   ```sql
+   SET FOREIGN_KEY_CHECKS = 0; -- Disable foreign key checks temporarily
+
+   TRUNCATE TABLE transactions;
+   TRUNCATE TABLE books;
+   TRUNCATE TABLE borrowers;
+   TRUNCATE TABLE users;
+
+   -- Drop existing tables to ensure the latest schema
+   DROP TABLE IF EXISTS transactions;
+   DROP TABLE IF EXISTS books;
+   DROP TABLE IF EXISTS borrowers;
+   DROP TABLE IF EXISTS users;
+
+   -- Books table
+   CREATE TABLE books (
+       book_id INT PRIMARY KEY AUTO_INCREMENT,
+       title VARCHAR(100) NOT NULL,
+       author VARCHAR(50) NOT NULL,
+       isbn VARCHAR(13) UNIQUE,
+       total_copies INT DEFAULT 1 NOT NULL,
+       available_copies INT DEFAULT 1 NOT NULL
+   );
+
+   -- Borrowers table
+   CREATE TABLE borrowers (
+       borrower_id INT PRIMARY KEY AUTO_INCREMENT,
+       name VARCHAR(50) NOT NULL,
+       email VARCHAR(100) UNIQUE,
+       phone VARCHAR(15)
+   );
+
+   -- Users table
+   CREATE TABLE users (
+       user_id INT PRIMARY KEY AUTO_INCREMENT,
+       username VARCHAR(50) NOT NULL UNIQUE,
+       password_hash VARCHAR(255) NOT NULL,
+       full_name VARCHAR(100),
+       email VARCHAR(100) UNIQUE,
+       role VARCHAR(20) NOT NULL DEFAULT 'USER', -- SUPER_ADMIN, ADMIN, USER
+       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+   );
+
+   -- Transactions table
+   CREATE TABLE transactions (
+       transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+       book_id INT,
+       borrower_id INT,
+       borrow_date DATE NOT NULL,
+       return_date DATE,
+       status VARCHAR(20) DEFAULT 'Pending' NOT NULL, -- Pending, Approved, Rejected, Returned
+       quantity INT DEFAULT 1 NOT NULL, -- Number of copies borrowed
+       FOREIGN KEY (book_id) REFERENCES books(book_id),
+       FOREIGN KEY (borrower_id) REFERENCES borrowers(borrower_id)
+   );
+
+   SET FOREIGN_KEY_CHECKS = 1; -- Re-enable foreign key checks
+   ```
+
+### 2. Configure the Java Project (IntelliJ IDEA)
+
+1. **Clone the Repository:**
+   Open a terminal or Git Bash and clone the repository:
+   ```bash
+   git clone https://github.com/ifauzeee/LibraryManagementSystem.git
+   cd LibraryManagementSystem
+   ```
+   Replace `ifauzeee` with your GitHub username if you’ve forked the repository.
+
+2. **Open the Project in IntelliJ IDEA:**
+   - Launch IntelliJ IDEA.
+   - Select `File` > `Open...` and navigate to the `LibraryManagementSystem` folder.
+
+3. **Download and Add External JARs Manually:**
+   - Create a `lib/` folder in the project root (`LibraryManagementSystem/lib/`) if it doesn’t exist.
+   - Download the following JAR files and place them in the `lib/` folder:
+      - **MySQL Connector/J:** Download from [dev.mysql.com/downloads/connector/j/](https://dev.mysql.com/downloads/connector/j/) (e.g., `mysql-connector-j-8.0.33.jar` or the latest compatible version).
+      - **FlatLaf Core:** Download from [mvnrepository.com/artifact/com.formdev/flatlaf](https://mvnrepository.com/artifact/com.formdev/flatlaf) (use version `3.4` or later, e.g., `flatlaf-3.4.jar`).
+      - **FlatLaf Themes:** Download from [mvnrepository.com/artifact/com.formdev/flatlaf-themes](https://mvnrepository.com/artifact/com.formdev/flatlaf-themes) (use version `3.4` or later, matching FlatLaf Core, e.g., `flatlaf-themes-3.4.jar`).
+      - **jBCrypt:** Download from [mvnrepository.com/artifact/org.mindrot/jbcrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt) (use version `0.4` or later, e.g., `jbcrypt-0.4.jar`).
+   - In IntelliJ IDEA, go to `File` > `Project Structure...` (`Ctrl+Alt+Shift+S`).
+   - In the `Project Structure` window, select **Libraries** under `Project Settings` in the left panel.
+   - Click the **`+`** (Add) button, choose **Java**, navigate to the `lib/` folder, select all downloaded `.jar` files, and click `OK`.
+   - Select the `LibraryManagementSystem` module if prompted, then click `OK`.
+
+4. **Invalidate Caches and Restart IDE:**
+   - Go to `File` > `Invalidate Caches / Restart...`.
+   - Select **Invalidate and Restart** to clear the IDE’s internal cache and restart IntelliJ.
+
+5. **Rebuild the Project:**
+   - After IntelliJ restarts, go to `Build` > **Rebuild Project** to recompile the project from scratch.
+
+### 3. Run the Application
+
+1. Ensure the **MySQL** module in the **XAMPP Control Panel** is running.
+2. In IntelliJ IDEA, navigate to `src/com/library/Main.java` in the Project Explorer.
+3. Right-click `Main.java` and select **Run 'Main.main()'**.
+
+The Library Management System will launch, displaying the login window.
 
 ---
 
-## Kontribusi
+## Default User Credentials
 
-Kontribusi dalam bentuk *bug reports*, permintaan fitur, atau *pull requests* sangat kami hargai! Jika Anda ingin berkontribusi pada proyek ini, silakan ikuti langkah-langkah berikut:
+Upon first running the application after resetting the database, the following accounts are automatically created for testing:
 
-1.  *Fork* repositori ini ke akun GitHub Anda.
-2.  Buat cabang baru untuk fitur atau perbaikan Anda (`git checkout -b feature/nama-fitur-baru-atau-perbaikan-bug`).
-3.  Lakukan perubahan Anda di kode.
-4.  *Commit* perubahan Anda dengan pesan yang jelas dan deskriptif (`git commit -m 'feat: Menambahkan fitur X' ` atau `fix: Memperbaiki bug Y`).
-5.  *Push* cabang Anda ke *fork* Anda (`git push origin feature/nama-fitur-baru-atau-perbaikan-bug`).
-6.  Buat *Pull Request* dari *fork* Anda ke repositori utama ini, jelaskan perubahan yang Anda buat, dan mengapa perubahan itu diperlukan.
-
----
-
-## Lisensi
-
-Proyek ini dilisensikan di bawah Lisensi MIT. Lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.
+- **SUPER_ADMIN:**
+   - Username: `superadmin`
+   - Password: `superpass`
+- **ADMIN:**
+   - Username: `admin`
+   - Password: `adminpass`
+- **USER:**
+   - Username: `user`
+   - Password: `userpass`
 
 ---
 
-Jika ada bagian spesifik yang masih Anda rasa kurang lengkap, atau ada detail format yang
+## Contributing
+
+Contributions in the form of bug reports, feature requests, or pull requests are highly appreciated! To contribute to this project, follow these steps:
+
+1. **Fork** the repository to your GitHub account.
+2. Create a new branch for your feature or fix (`git checkout -b feature/new-feature-or-bug-fix`).
+3. Make your changes to the codebase.
+4. Commit your changes with a clear, descriptive message (`git commit -m 'feat: Add new feature X' ` or `fix: Resolve bug Y`).
+5. Push your branch to your fork (`git push origin feature/new-feature-or-bug-fix`).
+6. Create a **Pull Request** from your fork to the main repository, explaining your changes and their necessity.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE). See the `LICENSE` file for details.
+
+---
+
+## Contact
+
+For questions, suggestions, or issues, please open a new issue on the [GitHub repository](https://github.com/ifauzeee/LibraryManagementSystem/issues). Replace `ifauzeee` with your GitHub username if you’ve forked the repository.
+
+---
+
+Thank you for using the Library Management System! We hope this application streamlines your library operations effectively.
+```
+
