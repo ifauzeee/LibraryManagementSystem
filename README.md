@@ -20,6 +20,172 @@ The **Library Management System** is a Java-based desktop application designed t
 - [System Requirements](#system-requirements)
 - [Project File Structure](#project-file-structure)
 - [Installation and Setup](#installation-and-setup)
+   - [1. Configure the Database (MySQL via XAMPP)](#1-configure-the-database-mysql-via-xampp)
+   - [2. Configure the Java Project (IntelliJ IDEA)](#2-configure-the-java-project-intellij-idea)
+   - [3. Run the Application](#3-run-the-application)
+- [Default User Credentials](#default-user-credentials)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+---
+
+## Project Overview
+
+The Library Management System provides a robust solution for managing core library operations. Built with Java Swing, it offers a user-friendly interface with a modern, flat design powered by FlatLaf. The application supports a complete workflow for borrowing books, including user-initiated loan requests, admin approvals, and automated stock updates. All data is securely stored in a MySQL database, with password hashing for enhanced security.
+
+This project is ideal for small to medium-sized libraries looking to digitize their operations while maintaining simplicity and efficiency.
+
+---
+
+## Key Features
+
+The application offers comprehensive functionality tailored to different user roles:
+
+- **Authentication and Authorization:**
+   - **User Registration:** Allows new users to create accounts with `USER` or `ADMIN` roles.
+   - **Secure Login:** Authenticates users with password hashing using the jBCrypt library for enhanced security.
+   - **Role-Based Access Control:** Restricts features and modules based on user roles (`SUPER_ADMIN`, `ADMIN`, `USER`).
+
+- **Book Management:**
+   - **CRUD Operations (ADMIN/SUPER_ADMIN):** Add, update, or delete books, including details like title, author, ISBN, and total/available copies.
+   - **Dynamic Availability Status:** Displays real-time book availability in the table:
+      - `Full (Ready)`: All copies are available.
+      - `Available (X/Y)`: Shows available copies out of total copies (e.g., `3/5`).
+      - `Out of Stock`: No copies available for borrowing.
+   - **Book Listing:** Viewable by all roles, showing comprehensive book details and stock status.
+
+- **Borrower Management:**
+   - **CRUD Operations (SUPER_ADMIN only):** Manage borrower data, including name, email, and phone number. Borrower entries are automatically created/updated during user registration or login.
+
+- **Loan Transaction Management:**
+   - **Loan Requests (USER):** Users can select books, specify quantities, and submit loan requests with a `Pending` status.
+   - **Loan Approval/Rejection (ADMIN/SUPER_ADMIN):** Admins review and approve or reject pending requests. Approvals automatically reduce available book copies.
+   - **Direct Loan Recording (ADMIN/SUPER_ADMIN):** Admins can record loans directly with immediate approval.
+   - **Book Returns (USER):** Users can mark borrowed books as returned, updating the transaction status to `Returned` and restoring available copies.
+   - **Transaction History (ADMIN/SUPER_ADMIN):** View a complete history of all loan and return transactions.
+
+- **Modern User Interface:**
+   - Clean, flat, and modern design using **FlatLaf**, mimicking web-inspired aesthetics with rounded buttons, subtle shadows, and consistent typography.
+   - Maximized dashboard window for optimal screen usage.
+   - "Refresh Data" buttons on each tab for manual data updates.
+   - Dynamic visibility of tabs and action buttons based on user role.
+
+---
+
+## User Roles and Permissions
+
+The application implements role-based access control to restrict functionality:
+
+- **`SUPER_ADMIN`**:
+   - **Access:** All tabs (Books, Borrowers, Transactions).
+   - **Permissions:** Full CRUD operations on Books, Borrowers, and Transactions; approve/reject loan requests.
+- **`ADMIN`**:
+   - **Access:** Books and Transactions tabs.
+   - **Permissions:** Full CRUD operations on Books and Transactions (except borrower deletion); approve/reject loan requests.
+- **`USER`**:
+   - **Access:** Books tab only.
+   - **Permissions:** View book list, submit loan requests, and return borrowed books.
+
+---
+
+## Technologies Used
+
+- **Programming Language:** Java (JDK 17)
+- **GUI Framework:** Java Swing
+- **Look and Feel:** [FlatLaf](https://www.formdev.com/flatlaf/) (FlatMacLightLaf theme for modern visuals)
+- **Database:** [MySQL](https://www.mysql.com/)
+- **Local Database Server:** [XAMPP](https://www.apachefriends.org/) (for running MySQL)
+- **Password Hashing:** [jBCrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt) (for secure password storage)
+- **Database Connector:** MySQL Connector/J (JDBC driver for Java-MySQL connectivity)
+- **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended for development)
+
+---
+
+## System Requirements
+
+To compile and run the application, ensure your system meets the following requirements:
+
+- **Java Development Kit (JDK):** Version 17 or higher.
+- **XAMPP:** Installed with the MySQL module running.
+- **Internet Connection:** Required for downloading external JAR files during initial setup.
+
+---
+
+## Project File Structure
+
+The project follows a standard Java project structure for organized code:
+
+```
+LibraryManagementSystem/
+├── .idea/                       # IntelliJ IDEA configuration files (auto-generated)
+├── out/                         # Compiled output (auto-generated during build)
+├── lib/                         # Directory for manually downloaded JAR files
+│   ├── mysql-connector-j-<version>.jar
+│   ├── flatlaf-<version>.jar
+│   ├── flatlaf-themes-<version>.jar
+│   ├── jbcrypt-<version>.jar
+├── src/                         # Source code
+│   └── com/library/
+│       ├── dao/             # Data Access Objects (database interactions)
+│       │   ├── BookDAO.java
+│       │   ├── BorrowerDAO.java
+│       │   ├── TransactionDAO.java
+│       │   ├── UserDAO.java
+│       ├── model/           # Data models
+│       │   ├── Book.java
+│       │   ├── Borrower.java
+│       │   ├── Transaction.java
+│       │   ├── User.java
+│       ├── view/            # GUI components
+│       │   ├── BookPanel.java
+│       │   ├── BorrowerPanel.java
+│       │   ├── LoginFrame.java
+│       │   ├── MainFrame.java
+│       │   ├── RegisterFrame.java
+│       │   ├── TransactionPanel.java
+│       ├── Main.java         # Application entry point
+├── README.md                    # Project documentation
+├── LICENSE                      # License file (e.g., MIT License)
+```
+
+---
+
+## Installation and Setup
+
+Follow these steps to set up and run the application locally.
+
+### 1. Configure the Database (MySQL via XAMPP)
+
+1. **Download and Install XAMPP:** If not already installed, download and install XAMPP from [https://www.apachefriends.org/](https://www.apachefriends.org/).
+2. **Start MySQL:** Open the **XAMPP Control Panel** and click **Start** on the **MySQL** module. Ensure the status changes to "Running".
+3. **Access MySQL Command Line:**
+   - In the XAMPP Control Panel, click **Shell** or **CMD** next to the MySQL module to open a terminal.
+   - Log in to MySQL: Run `mysql -u root -p` and press `Enter`. If no password is set for the `root` user, press `Enter` again.
+   - Select or create the database: Run `USE library_db;` to select the database. If it doesn’t exist, create it with `CREATE DATABASE library_db;` followed by `USE library_db;`.
+4. **Reset and Create Table Schema:** Copy and paste the following SQL script into the MySQL Command Line Client and incident_id="e8e616e0-d894-4936-a3f5-391682ee794c" title="README.md" contentType="text/markdown">
+
+# Library Management System
+
+![Java Swing UI](https://img.shields.io/badge/UI-Java%20Swing-blue)
+![Database](https://img.shields.io/badge/Database-MySQL-orange)
+![Development](https://img.shields.io/badge/Development-Java%20JDK%2017-red)
+![Build System](https://img.shields.io/badge/Build-Non--Maven%20(Manual%20JARs)-lightgrey)
+![Look and Feel](https://img.shields.io/badge/L&F-FlatLaf-yellowgreen)
+
+The **Library Management System** is a Java-based desktop application designed to streamline the management of library operations, including book collections, borrower data, loan transactions, and user authentication. It features a modern and intuitive graphical user interface (GUI) built with Java Swing and enhanced with the FlatLaf theme for a web-inspired aesthetic. Data is securely stored and managed in a MySQL database.
+
+---
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [User Roles and Permissions](#user-roles-and-permissions)
+- [Technologies Used](#technologies-used)
+- [System Requirements](#system-requirements)
+- [Project File Structure](#project-file-structure)
+- [Installation and Setup](#installation-and-setup)
   - [1. Configure the Database (MySQL via XAMPP)](#1-configure-the-database-mysql-via-xampp)
   - [2. Configure the Java Project (IntelliJ IDEA)](#2-configure-the-java-project-intellij-idea)
   - [3. Run the Application](#3-run-the-application)
@@ -310,4 +476,6 @@ For questions, suggestions, or issues, please open a new issue on the [GitHub re
 ---
 
 Thank you for using the Library Management System! We hope this application streamlines your library operations effectively.
+
+</xaiArtifact>
 ```
